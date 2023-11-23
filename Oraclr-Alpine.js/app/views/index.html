@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>AlpineJS</title>
+    <script src="alpinejs-3.12.0-min.js" defer></script>
+    <script src="src.js"></script>
+</head>
+
+<body x-data="dataApp">
+    <!-- Re-usable Data -->
+
+    <div x-data="{
+            metaData: [],
+            student: [],
+            stu: [],
+            array1: [],
+            array2: [],
+        
+            getstudent(){
+                fetch('/student')
+                .then((response) => response.json())
+                .then((json) => {
+                    this.student = json.rows;
+                    console.log(this.student);
+                    this.page = 5;
+                });
+            },
+            sidDetails(sid){
+                fetch(`/sidDetail/${sid}`)
+                .then((response) => response.json())
+                .then((json) => {
+                    this.stu = json.rows;
+                    this.metaData = json.metaData;
+                    console.log(this.stu);
+                    this.page = 6;
+                });
+                console.log(sid);
+            },
+
+            courseDetails(sid,coursename,year,semester){
+                fetch(`/courseDetail/${sid}/${coursename}/${year}/${semester}`)
+                .then((response) => response.json())
+                .then((json) => {
+                    this.stu = json.rows;
+                    this.metaData = json.metaData;
+                    console.log(this.stu);
+                    this.page = 7;
+                });
+                console.log(coursename);
+            },
+
+            save(){
+                fetch(`/save`,{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json' },
+                    body: JSON.stringify(this.stu)
+                })
+                .then (response => response.json())
+                .then (json => {
+                console.log(this.stu);
+                this.page = 5;
+                });
+            }
+    
+        
+          }" x-init="getstudent()">
+
+        <div>
+            <div>
+                <ul>
+                    <li><a href="#" @click="getData(1)">Faculty</a></li>
+                    <li><a href="#" @click="getData(2)">Year</a></li>
+                    <li><a href="#" @click="getData(3)">SURVIVAL_CGPA</a></li>
+                    <li><a href="#" @click="getData(4)">CGPA</a></li>
+                    <li><a href="#" @click="page=5">student</a></li>
+                </ul>
+            </div>
+            <br />
+            <div x-show="page === 1">
+                <table>
+                    <template x-for="faculty in data[key]">
+                        <tr>
+                            <td x-text="faculty"></td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+            <div x-show="page === 2">
+                <table>
+                    <template x-for="year in data[key]">
+                        <tr>
+                            <td x-text="year"></td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+            <div x-show="page === 3">
+                <table>
+                    <tr>
+                        <td class="head">Student_ID</td>
+                        <td class="head">Student Name</td>
+                        <td class="head">Survival GPA</td>
+                    </tr>
+                    <template x-for="SURVIVAL_CGPA in data[key]">
+                        <tr>
+                            <template x-for="col in SURVIVAL_CGPA">
+                                <td x-text="col"></td>
+                            </template>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+            <div x-show="page === 4">
+                <table>
+                    <tr>
+                        <td class="head">Student_ID</td>
+                        <td class="head">Student Name</td>
+                        <td class="head">CGPA</td>
+                    </tr>
+                    <template x-for="CGPA in data[key]">
+                        <tr>
+                            <template x-for="col in CGPA">
+                                <td x-text="col"></td>
+                            </template>
+                        </tr>
+                    </template>
+                </table>
+
+            </div>
+            <div x-show="page === 5">
+                <h1>List</h1>
+                <table>
+                    <tr>
+                        <th>sid</th>
+                        <th>Name</th>
+                    </tr>
+                    <template x-for="a in student">
+                        <tr>
+                            <td x-text="a[0]"></td>
+                            <td x-text="a[1]"></td>
+                            <td><a href="#" @click="sidDetails(`${a[0]}`)">view marks</a></td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+            <div x-show="page === 6">
+                <h1>Details</h1>
+                <table>
+                    <tr>
+                        <th>SID</th>
+                        <th>COURSES</th>
+                        <th>semester</th>
+                        <th>year</th>
+                        <th>obtain</th>
+                    </tr>
+                    <template x-for="row in stu">
+                        <tr>
+                            <td x-text="row[0]"></td>
+                            <td x-text="row[1]"></td>
+                            <td x-text="row[2]"></td>
+                            <td x-text="row[3]"></td>
+                            <td x-text="row[4]"></td>
+                            <td><a href="#"
+                                    @click="courseDetails(`${row[0]}`,`${row[1]}`,`${row[2]}`,`${row[3]}`)">edit</a>
+                            </td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+
+            <div x-show="page === 7">
+                <h1>Details</h1>
+                <table>
+                    <tr>
+                        <th>SID</th>
+                        <th>COURSES</th>
+                        <th>year</th>
+                        <th>semester</th>
+                        <th>obtain</th>
+                    </tr>
+                    <template x-for="row in stu">
+                        <tr>
+                            <td x-text="row[0]"></td>
+                            <td x-text="row[1]"></td>
+                            <td x-text="row[2]"></td>
+                            <td x-text="row[3]"></td>
+                            <td><input type="text" x-model="row[4]" /></td>
+                        </tr>
+                    </template>
+                </table>
+                <button @click="saveMark()">Save</button>
+                <pre x-text="JSON.stringify(stu, null, ' ')"></pre>
+            </div>
+</body>
+
+</html>
