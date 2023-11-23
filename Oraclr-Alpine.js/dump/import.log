@@ -1,0 +1,22 @@
+;;; 
+Import: Release 11.2.0.2.0 - Production on Sun Nov 12 08:47:40 2023
+
+Copyright (c) 1982, 2009, Oracle and/or its affiliates.  All rights reserved.
+;;; 
+Connected to: Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+Master table "SYSTEM"."SYS_IMPORT_FULL_01" successfully loaded/unloaded
+Starting "SYSTEM"."SYS_IMPORT_FULL_01":  system/******** DIRECTORY=DATA_PUMP_DIR DUMPFILE=TABLES.dmp 
+Processing object type TABLE_EXPORT/TABLE/TABLE
+Processing object type TABLE_EXPORT/TABLE/TABLE_DATA
+. . imported "DEMO"."RESULT"                             19.19 MB  744958 rows
+. . imported "DEMO"."HEADS"                              817.5 KB   30043 rows
+. . imported "DEMO"."REGISTER"                           974.9 KB   47923 rows
+. . imported "DEMO"."RECAP"                              167.4 KB    1972 rows
+. . imported "DEMO"."GRADE"                              7.007 KB      13 rows
+. . imported "DEMO"."STUDENT"                            46.35 KB    1613 rows
+Processing object type TABLE_EXPORT/TABLE/INDEX/INDEX
+Processing object type TABLE_EXPORT/TABLE/CONSTRAINT/CONSTRAINT
+Processing object type TABLE_EXPORT/TABLE/INDEX/STATISTICS/INDEX_STATISTICS
+Processing object type TABLE_EXPORT/TABLE/CONSTRAINT/REF_CONSTRAINT
+Processing object type TABLE_EXPORT/TABLE/STATISTICS/TABLE_STATISTICS
+Job "SYSTEM"."SYS_IMPORT_FULL_01" successfully completed at 08:48:42
