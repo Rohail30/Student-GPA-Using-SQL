@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+    oradb:
+        container_name: ORA-DB
+        image: wnameless/oracle-xe-11g-r2
+        restart: unless-stopped
+        environment:
+            - ORACLE_ALLOW_REMOTE=true
+        ports:
+            - "1521:1521"
+        volumes:
+            - ./dump:/u01/app/oracle/admin/XE/dpdump
+            - ./init:/docker-entrypoint-initdb.d/
+        healthcheck:
+            test: ["CMD", "bash", "-c", "echo 'SELECT COUNT(*) FROM demo.student;' | ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe /u01/app/oracle/product/11.2.0/xe/bin/sqlplus -s sys/oralce@localhost"]
+            interval: 5s
+            timeout: 30s
+            retries: 5
+
+    app:
+        container_name: node-app
+        build:
+            dockerfile: Dockerfile
+        working_dir: /usr/src/app
+        volumes:
+            - ./app:/usr/src/app
+        command: bash -c "npm i -g nodemon && npm install && nodemon -L index.js"
+        restart: unless-stopped
+        ports:
+            - 5001:5001
+        depends_on:
+            oradb:
+                condition: service_healthy
+        stdin_open: true
+        tty: true
