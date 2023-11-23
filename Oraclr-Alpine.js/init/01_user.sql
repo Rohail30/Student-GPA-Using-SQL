@@ -1,0 +1,5 @@
+Rem Copyright (c) 1990, 2006, Oracle. All rights reserved.  
+
+CONNECT sys/oracle AS SYSDBA;
+CREATE USER DEMO IDENTIFIED by demo;
+GRANT CONNECT,RESOURCE,DBA,UNLIMITED TABLESPACE TO demo;
