@@ -29,6 +29,9 @@ To stop the app, press Ctrl + C in the terminal running Docker Compose.
 Tools, API, Framework used:
 
 Docker
+
 Oracle 11g r2 (docker image)
+
 Alpine.js (v3.12.0)
+
 REST API
